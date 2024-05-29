@@ -3,7 +3,7 @@ import { Login } from "./Login"
 import { Browse } from "./Browse"
 
 export const Body = ()=>{
-    const router = createBrowserRouter([
+    const appRouter = createBrowserRouter([
         {
             path:'/',
             element:<Login />
@@ -15,6 +15,6 @@ export const Body = ()=>{
         }
     ])
     return(
-        <RouterProvider router={router}/>
+        <RouterProvider router={appRouter}/>
     )
 }
