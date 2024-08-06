@@ -8,6 +8,9 @@ import {
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {loginUser} from '../store/Reducer/userSlice';
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -17,6 +20,8 @@ const Login = () => {
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
+
+  const dispatch = useDispatch();
 
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
@@ -50,22 +55,24 @@ const Login = () => {
         });
     } else {
       // Sign In Logic
-      signInWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      )
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "-" + errorMessage);
-        });
+      let data = {auth:auth, email:email.current.value, password:password.current.value,navigate}
+      dispatch(loginUser({data,navigate,toast}));
+      // signInWithEmailAndPassword(
+      //   auth,
+      //   email.current.value,
+      //   password.current.value
+      // )
+      //   .then((userCredential) => {
+      //     // Signed in
+      //     const user = userCredential.user;
+      //     console.log('61',user);
+      //     navigate("/browse");
+      //   })
+      //   .catch((error) => {
+      //     const errorCode = error.code;
+      //     const errorMessage = error.message;
+      //     setErrorMessage(errorCode + "-" + errorMessage);
+      //   });
     }
   };
 
